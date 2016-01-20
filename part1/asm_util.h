@@ -10,8 +10,8 @@
 #define THIRD 0x2
 #define FOURTH 0x4
 
-#define L1_ACCESS 0x3
-#define L1_MISS 0x4
+#define L1_ACCESS 0x4
+#define L1_MISS 0x3
 #define L2_ACCESS 0x16
 #define L2_MISS 0x17
 
@@ -21,10 +21,6 @@
 #define SET_EVENT(eventId) MCR("c13","1", eventId)
 #define READ_EVENT_COUNTER(v) MRC("c13","2",v)
     
-/* 0x13	[17]	Data memory access. */
-/* 0x15	[19]	Data cache eviction. */
-/* 0x16	-	Level 2 data cache access */
-/* 0x17	-	Level 2 data cache refill */
 
 
 
