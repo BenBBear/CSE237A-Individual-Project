@@ -10,8 +10,8 @@
 #define THIRD 0x2
 #define FOURTH 0x4
 
-#define L1_ACCESS 0x13
-#define L1_MISS 0x15
+#define L1_ACCESS 0x3
+#define L1_MISS 0x4
 #define L2_ACCESS 0x16
 #define L2_MISS 0x17
 
