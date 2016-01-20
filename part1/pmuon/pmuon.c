@@ -76,7 +76,7 @@ int init_module(void) {
             SELECT(event_counters[i]);
             SET_EVENT(event_types[i]);
             READ_EVENT_COUNTER(v);
-            printk(message[i],v);
+            printk(message[i],TO_INT(v));
         }
         printk("\n Finished! \n");           
 	return 0;
