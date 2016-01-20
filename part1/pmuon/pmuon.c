@@ -6,7 +6,6 @@ MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Your name");
 MODULE_DESCRIPTION("PMUON");
 
-
 void cache_performance_test_with_setup(void){
     printk("\n\nNow use event counters to read data cache performance.\n\n");   
     unsigned int event_counters[] = {FIRST,SECOND,THIRD,FOURTH};
@@ -27,30 +26,8 @@ void cache_performance_test_with_setup(void){
         printk(message[i],TO_INT(v));
     }
     printk("\n Finished! \n");           
-    return 0;
 }
 
-void cache_performance_test_without_setup(void){
-    printk("\n\nNow use event counters to read data cache performance.\n\n");   
-    unsigned int event_counters[] = {FIRST,SECOND,THIRD,FOURTH};
-    unsigned int event_types[] = {L1_ACCESS,L1_MISS,L2_ACCESS,L2_MISS};
-    char *message[] = {
-        "L1 Cache Access Number: %d\n",
-        "L1 Cache Miss Number: %d\n",
-        "L2 Cache Access Number: %d\n",
-        "L2 Cache Miss Number: %d\n"
-    };        
-    unsigned int len = 4;
-    unsigned int i = 0;
-    unsigned int v;
-    for(;i<len;i++){
-        SELECT(event_counters[i]);
-        READ_EVENT_COUNTER(v);
-        printk(message[i],TO_INT(v));
-    }
-    printk("\n Finished! \n");           
-    return 0;
-}
 
 
 
@@ -86,8 +63,8 @@ int init_module(void) {
 	return 0;
 }
 
+
 void cleanup_module(void) {
 	printk("GOODBYE, PMU Off\n");
 }
-
 

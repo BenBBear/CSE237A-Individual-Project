@@ -25,3 +25,32 @@
 /* 0x15	[19]	Data cache eviction. */
 /* 0x16	-	Level 2 data cache access */
 /* 0x17	-	Level 2 data cache refill */
+
+
+
+void cache_performance_test_without_setup(void){
+    printf("\n\nNow use event counters to read data cache performance.\n\n");   
+    unsigned int event_counters[] = {FIRST,SECOND,THIRD,FOURTH};
+    /* unsigned int event_types[] = {L1_ACCESS,L1_MISS,L2_ACCESS,L2_MISS}; */
+    char *message[] = {
+        "L1 Cache Access Number: %d\n",
+        "L1 Cache Miss Number: %d\n",
+        "L2 Cache Access Number: %d\n",
+        "L2 Cache Miss Number: %d\n"
+    };        
+    unsigned int len = 4;
+    unsigned int i = 0;
+    unsigned int v;
+    for(;i<len;i++){
+        SELECT(event_counters[i]);
+        READ_EVENT_COUNTER(v);
+        printf(message[i],TO_INT(v));
+    }
+    printf("\n Cache Performance Monitor Finished! \n");           
+}
+
+unsigned int read_cycle(void){
+    unsigned int v;
+    MRC("c13","0",v);    
+    return TO_INT(v);
+}

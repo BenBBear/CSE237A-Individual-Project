@@ -183,11 +183,14 @@ int main(int argc, char *argv[]) {
 	t0 = get_current_time_us();
 	reset_counters();
         
+        
 	// 2. Run workload
         workload_body(DEF_ITERATION, DEF_STRIDE, DEF_SIZE);
 
         
-        
+        cache_performance_test_without_setup();
+        unsigned counter = read_cycle();
+        printf("Cycle Counter: %d\n", counter);
         
 	// 3. Here, you may need to get performance counters.
 	t1 = get_current_time_us();
