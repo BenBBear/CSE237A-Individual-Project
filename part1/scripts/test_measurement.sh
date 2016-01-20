@@ -1,5 +1,5 @@
 #!sh
-sudo insmod ../pmuon/pmuon.ko
-../memmeasurement/memmeasurement
+sudo insmod `pwd`/../pmuon/pmuon.ko
+sudo ../memmeasurement/memmeasurement
 sudo rmmod pmuon
 dmesg

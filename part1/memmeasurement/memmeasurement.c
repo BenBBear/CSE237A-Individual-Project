@@ -13,7 +13,7 @@
 #include <sys/mman.h>
 
 #include "governor_part1.h"
-
+#include "../asm_util.h"
 // Workload that traverses allocated memory area in a reverse order (to minimize prefetching effect)
 /* Change this */
 static int DEF_ITERATION = 10000;
@@ -182,10 +182,13 @@ int main(int argc, char *argv[]) {
 	// 1. Reset measurement metrics
 	t0 = get_current_time_us();
 	reset_counters();
-
+        
 	// 2. Run workload
-	workload_body(DEF_ITERATION, DEF_STRIDE, DEF_SIZE);
+        workload_body(DEF_ITERATION, DEF_STRIDE, DEF_SIZE);
 
+        
+        
+        
 	// 3. Here, you may need to get performance counters.
 	t1 = get_current_time_us();
 
