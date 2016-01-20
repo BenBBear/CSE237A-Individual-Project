@@ -23,7 +23,7 @@ void cache_performance_test_with_setup(void){
         SELECT(event_counters[i]);
         SET_EVENT(event_types[i]);
         READ_EVENT_COUNTER(v);
-        printk(message[i],TO_INT(v));
+        printk(message[i],v);
     }
     printk("\n Finished! \n");           
 }
