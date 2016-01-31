@@ -14,10 +14,12 @@ void init_shared_variable(SharedVariable* sv) {
 
 void init_sensors(SharedVariable* sv) {
     pinMode(PIN_ALED, OUTPUT);
-    pinMode(PIN_BLUE, OUTPUT);
-    pinMode(PIN_BUTTON, INPUT);
+    pinMode(PIN_BLUE, OUTPUT);    
     pinMode(PIN_BUZZER, OUTPUT);
-    pinMode(PIN_SHOCK, OUTPUT);
+    pinMode(PIN_YELLOW, OUTPUT);
+    
+    pinMode(PIN_BUTTON, INPUT);
+    pinMode(PIN_SHOCK, INPUT);
     pinMode(PIN_TEMP, INPUT);
     pinMode(PIN_TRACK, INPUT);
 
@@ -29,7 +31,7 @@ void init_sensors(SharedVariable* sv) {
 
 void body_button(SharedVariable* sv) {
     int button = READ(PIN_BUTTON);
-    if (button){
+    if (button == 0){
         if (sv->state == DRIVING){
             init_shared_variable(sv);
         }else{
@@ -46,7 +48,7 @@ void body_twocolor(SharedVariable* sv) {
 
 void body_temp(SharedVariable* sv) {    
     int temp = READ(PIN_TEMP);
-    printf("TEMP: %d",temp);    
+    printf("TEMP: %d\n",temp);    
     if(temp){
         sv->temp = YES;
     }else{
@@ -56,7 +58,7 @@ void body_temp(SharedVariable* sv) {
 
 void body_track(SharedVariable* sv) {
     int track = READ(PIN_TRACK);
-    printf("TRACK: %d",track);
+    /* printf("TRACK: %d",track); */
     if(track){
         sv->track = YES;
     }    
@@ -64,7 +66,7 @@ void body_track(SharedVariable* sv) {
 
 void body_shock(SharedVariable* sv) {
     int shock = READ(PIN_SHOCK);
-    printf("SHOCK: %d",shock);
+    /* printf("SHOCK: %d",shock); */
     if(shock){
         sv->shock = YES;
     }
