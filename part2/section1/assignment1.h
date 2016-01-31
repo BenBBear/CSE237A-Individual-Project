@@ -26,13 +26,13 @@ digitalWrite(pin,x);                    \
 #define READ(pin) digitalRead(pin)
 
 // 1. Button
-#define PIN_BUTTON 0
-
+#define PIN_BUTTON 0 //11
+ 
 // 2. 2-Color LED
-#define PIN_YELLOW 1
+#define PIN_YELLOW 1 //12
 
 // 3. Temperature
-#define PIN_TEMP 4
+#define PIN_TEMP 4 //16
 
 // 4. Tracking Sensor
 #define PIN_TRACK 5
@@ -41,15 +41,15 @@ digitalWrite(pin,x);                    \
 #define PIN_SHOCK 6
 
 // 6. RGB(3-Color) LED
-#define PIN_RED 7
-#define PIN_GREEN 8
-#define PIN_BLUE 9
+#define PIN_RED 7 //7
+#define PIN_GREEN 8 //3
+#define PIN_BLUE 9 //5
 
 // 7. Auto-flash Red
-#define PIN_ALED 12
+#define PIN_ALED 12 //19
 
 // 8. Buzzer
-#define PIN_BUZZER 13
+#define PIN_BUZZER 13 //21
 
 #define DRIVING 10
 #define STAY 9

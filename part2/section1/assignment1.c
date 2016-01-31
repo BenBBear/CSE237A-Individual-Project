@@ -50,7 +50,7 @@ void body_twocolor(SharedVariable* sv) {
 
 void body_temp(SharedVariable* sv) {    
     int temp = READ(PIN_TEMP);
-    printf("TEMP: %d\n",temp);    
+    /* printf("TEMP: %d\n",temp);     */
     if(temp){
         sv->temp = YES;
     }else{
@@ -60,8 +60,8 @@ void body_temp(SharedVariable* sv) {
 
 void body_track(SharedVariable* sv) {
     int track = READ(PIN_TRACK);
-    /* printf("TRACK: %d",track); */
-    if(track){
+    printf("TRACK: %d\n",track);
+    if(track == 1){
         sv->track = YES;
     }    
 }
