@@ -43,6 +43,8 @@ void body_button(SharedVariable* sv) {
 void body_twocolor(SharedVariable* sv) {
     if(sv->state == DRIVING){
         ON(PIN_YELLOW);
+    }else{
+        OFF(PIN_YELLOW);
     }
 }
 
