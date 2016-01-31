@@ -60,7 +60,7 @@ void body_temp(SharedVariable* sv) {
 
 void body_track(SharedVariable* sv) {
     int track = READ(PIN_TRACK);
-    /* printf("TRACK: %d\n",track); */
+    printf("TRACK: %d\n",track);
     if(track == 1){
         sv->track = YES;
     }    
@@ -68,7 +68,7 @@ void body_track(SharedVariable* sv) {
 
 void body_shock(SharedVariable* sv) {
     int shock = READ(PIN_SHOCK);
-    printf("SHOCK: %d\n",shock);
+    /* printf("SHOCK: %d\n",shock); */
     if(shock == 0){
         sv->shock = YES;
     }
