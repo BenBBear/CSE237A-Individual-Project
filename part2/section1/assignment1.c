@@ -69,7 +69,7 @@ void body_track(SharedVariable* sv) {
 void body_shock(SharedVariable* sv) {
     int shock = READ(PIN_SHOCK);
     printf("SHOCK: %d\n",shock);
-    if(shock){
+    if(shock == 0){
         sv->shock = YES;
     }
 }
