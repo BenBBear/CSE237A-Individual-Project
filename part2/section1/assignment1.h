@@ -35,10 +35,10 @@ digitalWrite(pin,x);                    \
 #define PIN_TEMP 4 //16
 
 // 4. Tracking Sensor
-#define PIN_TRACK 5
+#define PIN_TRACK 5 //18
 
 // 5. Shock Sensor
-#define PIN_SHOCK 6
+#define PIN_SHOCK 6 //22
 
 // 6. RGB(3-Color) LED
 #define PIN_RED 7 //7
