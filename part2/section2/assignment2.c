@@ -28,6 +28,16 @@ void printTasks(const int *aliveTasks){
     printf("\n");
 }
 
+char *taskNum[] = {
+    "BUTTON",
+    "TWOCOLOR",
+    "TEMP",
+    "TRACK",
+    "SHOCK",
+    "RGBCOLOR",
+    "ALED",
+    "BUZZER"
+};
 
 void learn_workloads(SharedVariable* sv) {
     sv->workloads = workloads;    
@@ -37,7 +47,7 @@ void learn_workloads(SharedVariable* sv) {
         start = get_current_time_us();            
         (*(functions[i]))(sv);        
         end = get_current_time_us();
-        printf("Button: %lld", start-end);
+        printf("%s: %lld",taskNum[i], start-end);
         sv->workloads[i] = start - end;
     }
 }
