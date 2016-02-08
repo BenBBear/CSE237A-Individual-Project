@@ -3,6 +3,7 @@
 #include "workload.h"
 #include "scheduler.h"
 #include "governor.h"
+#include <stdio.h>
 
 // Note: Deadline of each workload is defined in the "workloadDeadlines" variable.
 // i.e., You can access the dealine of the BUTTON thread using workloadDeadlines[BUTTON]
@@ -10,24 +11,36 @@
 
 // Assignment: You need to implement the following two functions.
 
-// learn_workloads(SharedVariable* v):
-// This function is called at the start part of the program before actual scheduling
-// - Parameters
-// sv: The variable which is shared for every function over all threads
+typedef  void* (*thread_function_t)(void*);
+
+long long workloads[] = {0,0,0,0,0,0,0,0};
+
+
+thread_function_t functions[] = {&thread_button, &thread_twocolor, &thread_temp,
+               &thread_track, &thread_shock, &thread_rgbcolor,&thread_aled, &thread_buzzer };
+
+
+void printTasks(const int *aliveTasks){
+    int i = 0;
+    for(;i<8;i++){
+        printf("%d ", *(aliveTasks+i));
+    }
+    printf("\n");
+}
+
+
 void learn_workloads(SharedVariable* sv) {
-	// TODO: Fill the body
-	// This function is executed before the scheduling simulation.
-	// You need to calculate the execution time of each thread here.
-
-	// Thread functions for workloads: 
-	// thread_button, thread_twocolor, thread_temp, thread_track,
-	// thread_shock, thread_rgbcolor, thread_aled, thread_buzzer
-
-	// Tip 1. You can call each workload function here like:
-	// thread_button();
-
-	// Tip 2. You can get the current time here like:
-	// long long curTime = get_current_time_us();
+    sv->workloads = workloads;    
+    long long start, end;
+    void* v;
+    int i = 0;
+    for(i = 0; i<NUM_TASKS;i++){
+        start = get_current_time_us();            
+        (*(functions[i]))(v);
+        end = get_current_time_us();
+        printf("Button: %lld", start-end);
+        sv->workloads[i] = start - end;
+    }
 }
 
 
@@ -41,18 +54,11 @@ void learn_workloads(SharedVariable* sv) {
 // - Return value
 // TaskSelection structure which indicates the scheduled task and the CPU frequency
 TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long idleTime) {
-	// TODO: Fill the body
-	// This function is executed inside of the scheduling simulation.
-    // You need to implement an energy-efficient EDF (Earliest Deadline First) scheduler.
-
-	// Tip 1. You may get the current time elapsed in the scheduler here like:
-	// long long curTime = get_scheduler_elapsed_time_us();
-
-	// Also, do not make any interruptable / IO tasks in this function.
-	// You can use printfDBG instead of printf.
-
 	// Sample scheduler: Round robin
 	// It selects a next thread using aliveTasks.
+    printf("%lld", idleTime);
+    printTasks(aliveTasks);
+    
 	static int prev_selection = -1;
 
 	int i = prev_selection + 1;

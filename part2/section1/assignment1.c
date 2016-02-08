@@ -51,26 +51,32 @@ void body_twocolor(SharedVariable* sv) {
 void body_temp(SharedVariable* sv) {    
     int temp = READ(PIN_TEMP);
     /* printf("TEMP: %d\n",temp);     */
-    if(temp){
-        sv->temp = YES;
-    }else{
-        sv->temp = NO;
-    }    
+    if (sv->state == DRIVING){
+        if(temp && sv->shock == NO &&  sv->track == NO){
+            sv->temp = YES;
+        }else{
+            sv->temp = NO;
+        }
+    }
 }
 
 void body_track(SharedVariable* sv) {
     int track = READ(PIN_TRACK);
     /* printf("TRACK: %d\n",track); */
-    if(track == 0){
-        sv->track = YES;
-    }    
+    if (sv->state == DRIVING){
+        if(track == 0 && sv->shock == NO && sv->temp == NO){
+            sv->track = YES;
+        }
+    }
 }
 
 void body_shock(SharedVariable* sv) {
     int shock = READ(PIN_SHOCK);
     /* printf("SHOCK: %d\n",shock); */
-    if(shock == 0){
-        sv->shock = YES;
+    if (sv->state == DRIVING){
+        if(shock == 0 && sv->track == NO && sv->temp == NO){
+            sv->shock = YES;
+        }
     }
 }
 
