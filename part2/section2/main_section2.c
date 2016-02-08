@@ -58,10 +58,10 @@ int main(int argc, char* argv[]) {
 		return 1; 
 	}
 
-
-        printf("1");
+        
 	// Initialize for the interfaces provided
 	signal(SIGINT, signal_handler);
+        printf("1");
 	init_deferred_buffer(1024*1024); // 1MB
 	init_userspace_governor();
 	init_workload();
