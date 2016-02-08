@@ -160,7 +160,7 @@ TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long i
     }
     last_timestamp = current_timestamp;
     
-    updateCurrentDeadlines(time_difference, lastAliveTasks, aliveTasks);
+    updateCurrentDeadlines(time_difference, lastAliveTasks, aliveTasks, idleTime);
         
     TaskSelection sel;
     sel.task = chooseTask(currentDeadlines, aliveTasks); 
