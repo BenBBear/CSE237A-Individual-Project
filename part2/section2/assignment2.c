@@ -26,7 +26,7 @@ void printTasks(const int *aliveTasks){
     for(;i<8;i++){
         printf("%d ", *(aliveTasks+i));
     }
-    printf("\n");
+    printf(" :::::: ");
 }
 
 char *taskNum[] = {
