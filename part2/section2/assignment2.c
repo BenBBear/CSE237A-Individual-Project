@@ -62,10 +62,13 @@ void learn_workloads(SharedVariable* sv) {
 //           (i.e., it's larger than 0 only when all threads are finished and not reache the next preiod.)
 // - Return value
 // TaskSelection structure which indicates the scheduled task and the CPU frequency
+long long totalIdleTime = 0;
 TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long idleTime) {
 	// Sample scheduler: Round robin
 	// It selects a next thread using aliveTasks.
-    printf("%lld\n", idleTime);
+    totalIdleTime += idleTime;
+    printDBG("This idleTime is %lld\n", idleTime);
+    printDBG("Total idleTime is %lld\n", totalIdleTime);
     /* printTasks(aliveTasks); */
     
 	static int prev_selection = -1;
