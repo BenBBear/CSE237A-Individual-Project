@@ -44,7 +44,7 @@ void signal_handler(int signum) {
 }
 
 int main(int argc, char* argv[]) {
-    printf("adsfkasdflaksdfalksdfj");
+    /* printf("adsfkasdflaksdfalksdfj"); */
     
 	SharedVariable v;
         
@@ -58,17 +58,21 @@ int main(int argc, char* argv[]) {
 		return 1; 
 	}
 
+
+        printf("1");
 	// Initialize for the interfaces provided
 	signal(SIGINT, signal_handler);
 	init_deferred_buffer(1024*1024); // 1MB
 	init_userspace_governor();
 	init_workload();
+        printf("2");
 
+        
 	// Initializers that you need to implement
 	init_shared_variable(&v);
 	init_sensors(&v);
 	learn_workloads(&v);
-
+        printf("3");
 	// Init scheduler
 	int aliveTasks[NUM_TASKS];
 	init_scheduler(runningTimeInSec);
