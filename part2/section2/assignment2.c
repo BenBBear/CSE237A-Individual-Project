@@ -22,11 +22,11 @@ thread_function_t functions[] = {&thread_button, &thread_twocolor, &thread_temp,
 
 void printTasks(const int *aliveTasks){
     int i = 0;
-    printf("Current Alive Tasks:  ");
+    printDBG("Current Alive Tasks:  ");
     for(;i<8;i++){
-        printf("%d ", *(aliveTasks+i));
+        printDBG("%d ", *(aliveTasks+i));
     }
-    printf(" :::::: ");
+    printDBG(" :::::: ");
 }
 
 char *taskNum[] = {
@@ -48,7 +48,7 @@ void learn_workloads(SharedVariable* sv) {
         start = get_current_time_us();            
         (*(functions[i]))(sv);        
         end = get_current_time_us();
-        printf("%s: %lld\n",taskNum[i], end-start);
+        printDBG("%s: %lld\n",taskNum[i], end-start);
         sv->workloads[i] = end-start;
         currentDeadlines[i] = workloadDeadlines[i];
     }
@@ -139,8 +139,18 @@ void updateLastAliveTasks(const int* aliveTasks){
 }
 
 void printTask(TaskSelection t){
-    printf("Task  id:%d, freq:%d", t.task, t.freq);
-    printf("   ::::   ");
+    printDBG("Task  id:%d, freq:%d", t.task, t.freq);
+    printDBG("   ::::   ");
+}
+
+void printDeadlines(){
+    int i = 0;
+    printDBG("Current Deadline: ");
+    for(;i<NUM_TASKS;i++){
+        printDBG("");
+        printDBG("%lld  ",currentDeadlines[i]);
+    }
+    printDBG("  :::::  ");
 }
 
 // sv->workloads     => estimated time to execute
@@ -149,7 +159,7 @@ void printTask(TaskSelection t){
 TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long idleTime) {
     
     /* totalIdleTime += idleTime; */
-    /* printf("Total idleTime is %lld\n", totalIdleTime); */
+    /* printDBG("Total idleTime is %lld\n", totalIdleTime); */
     
     static long long last_timestamp = -1;
     long long current_timestamp = get_scheduler_elapsed_time_us();
@@ -166,9 +176,12 @@ TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long i
     sel.task = chooseTask(currentDeadlines, aliveTasks); 
     sel.freq = chooseFreq();
     
-    updateLastAliveTasks(aliveTasks);
+    
     printTasks(aliveTasks);
     printTask(sel);
-    printf("idleTime is %lld\n", idleTime);   
+    printDeadlines();    
+    printDBG("idleTime is %lld\n", idleTime);
+
+    updateLastAliveTasks(aliveTasks);
     return sel;
 }
