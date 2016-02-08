@@ -44,8 +44,10 @@ void signal_handler(int signum) {
 }
 
 int main(int argc, char* argv[]) {
+    printf("adsfkasdflaksdfalksdfj");
+    
 	SharedVariable v;
-
+        
 	int runningTimeInSec = 10;
 	if (argc == 2) {
 		runningTimeInSec = atoi(argv[1]);
