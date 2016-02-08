@@ -139,7 +139,8 @@ void updateLastAliveTasks(const int* aliveTasks){
 }
 
 void printTask(TaskSelection t){
-    printf("Task  id:%d, freq:%d\n", t.task, t.freq);
+    printf("Task  id:%d, freq:%d", t.task, t.freq);
+    printf("   ::::   ");
 }
 
 // sv->workloads     => estimated time to execute
@@ -168,5 +169,6 @@ TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long i
     updateLastAliveTasks(aliveTasks);
     printTasks(aliveTasks);
     printTask(sel);
+    printf("idleTime is %lld\n", idleTime);   
     return sel;
 }
