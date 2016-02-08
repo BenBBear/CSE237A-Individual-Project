@@ -91,9 +91,9 @@ void updateCurrentDeadlines(long long time_difference, int* lastAliveTasks, cons
     for(;i<NUM_TASKS;i++){
         if(aliveTasks[i] == 1){
             if(lastAliveTasks[i] == 1 && idleTime == 0){
-                lastAliveTasks[i] = lastAliveTasks[i] - time_difference;
+                currentDeadlines[i] = currentDeadlines[i] - time_difference;
             }else{
-                lastAliveTasks[i] = workloadDeadlines[i];
+                currentDeadlines[i] = workloadDeadlines[i];
             }
         }else{
             currentDeadlines[i] = 0;
