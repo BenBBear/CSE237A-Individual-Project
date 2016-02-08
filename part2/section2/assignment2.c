@@ -32,11 +32,10 @@ void printTasks(const int *aliveTasks){
 void learn_workloads(SharedVariable* sv) {
     sv->workloads = workloads;    
     long long start, end;
-    void* v;
     int i = 0;
     for(i = 0; i<NUM_TASKS;i++){
         start = get_current_time_us();            
-        (*(functions[i]))(v);
+        (*(functions[i]))();
         end = get_current_time_us();
         printf("Button: %lld", start-end);
         sv->workloads[i] = start - end;
