@@ -35,7 +35,7 @@ void learn_workloads(SharedVariable* sv) {
     int i = 0;
     for(i = 0; i<NUM_TASKS;i++){
         start = get_current_time_us();            
-        (*(functions[i]))();
+        (*(functions[i]))(sv);        
         end = get_current_time_us();
         printf("Button: %lld", start-end);
         sv->workloads[i] = start - end;
