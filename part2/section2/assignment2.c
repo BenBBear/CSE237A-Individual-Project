@@ -22,6 +22,7 @@ thread_function_t functions[] = {&thread_button, &thread_twocolor, &thread_temp,
 
 void printTasks(const int *aliveTasks){
     int i = 0;
+    printf("Current Alive Tasks:  ");
     for(;i<8;i++){
         printf("%d ", *(aliveTasks+i));
     }
@@ -137,14 +138,17 @@ void updateLastAliveTasks(const int* aliveTasks){
     }
 }
 
+void printTask(TaskSelection t){
+    printf("Task  id:%d, freq:%d\n", t.task, t.freq);
+}
 
 // sv->workloads     => estimated time to execute
 // currentDeadlines  => current time to deadline
 // workloadDeadlines => period & deadline
 TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long idleTime) {
     
-    totalIdleTime += idleTime;
-    printDBG("Total idleTime is %lld\n", totalIdleTime);
+    /* totalIdleTime += idleTime; */
+    /* printf("Total idleTime is %lld\n", totalIdleTime); */
     
     static long long last_timestamp = -1;
     long long current_timestamp = get_scheduler_elapsed_time_us();
@@ -160,7 +164,9 @@ TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long i
     TaskSelection sel;
     sel.task = chooseTask(currentDeadlines, aliveTasks); 
     sel.freq = chooseFreq();
-    updateLastAliveTasks(aliveTasks);
     
+    updateLastAliveTasks(aliveTasks);
+    printTasks(aliveTasks);
+    printTask(sel);
     return sel;
 }
