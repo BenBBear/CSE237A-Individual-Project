@@ -47,8 +47,8 @@ void learn_workloads(SharedVariable* sv) {
         start = get_current_time_us();            
         (*(functions[i]))(sv);        
         end = get_current_time_us();
-        printf("%s: %lld",taskNum[i], start-end);
-        sv->workloads[i] = start - end;
+        printf("%s: %lld",taskNum[i], end-start);
+        sv->workloads[i] = end-start;
     }
 }
 
@@ -66,7 +66,7 @@ TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long i
 	// Sample scheduler: Round robin
 	// It selects a next thread using aliveTasks.
     printf("%lld", idleTime);
-    printTasks(aliveTasks);
+    /* printTasks(aliveTasks); */
     
 	static int prev_selection = -1;
 
