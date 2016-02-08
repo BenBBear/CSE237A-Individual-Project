@@ -60,10 +60,10 @@ int main(int argc, char* argv[]) {
 
         
 	// Initialize for the interfaces provided
-	signal(SIGINT, signal_handler);
-        printf("1");
+	signal(SIGINT, signal_handler);        
 	init_deferred_buffer(1024*1024); // 1MB
 	init_userspace_governor();
+        printf("1");
 	init_workload();
         printf("2");
 
