@@ -86,11 +86,11 @@ void learn_workloads(SharedVariable* sv) {
 #define LOW 0
 #define HIGH 1
 
-void updateCurrentDeadlines(long long time_difference, int* lastAliveTasks, const int* aliveTasks){
+void updateCurrentDeadlines(long long time_difference, int* lastAliveTasks, const int* aliveTasks, long long idleTime){
     int i = 0;
     for(;i<NUM_TASKS;i++){
         if(aliveTasks[i] == 1){
-            if(lastAliveTasks[i] == 1){
+            if(lastAliveTasks[i] == 1 && idleTime == 0){
                 lastAliveTasks[i] = lastAliveTasks[i] - time_difference;
             }else{
                 lastAliveTasks[i] = workloadDeadlines[i];
