@@ -62,9 +62,9 @@ int main(int argc, char* argv[]) {
 	// Initialize for the interfaces provided
 	signal(SIGINT, signal_handler);        
 	init_deferred_buffer(1024*1024); // 1MB
-        printf("1\n");
+        /* printf("1\n"); */
 	init_userspace_governor();
-        printf("sdfsd\n");
+        /* printf("sdfsd\n"); */
 	init_workload();
         printf("2");
 
