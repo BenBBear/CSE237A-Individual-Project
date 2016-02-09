@@ -263,7 +263,7 @@ int lastAliveTasks[] = {0, 0, 0, 0, 0, 0, 0, 0};
 void updateLastAliveTasks(const int* aliveTasks){
     int i = 0;
     for(;i<NUM_TASKS;i++){
-        lastAliveTasks[i] = *(aliveTasks+i);
+        currentDeadlines[i] = *(aliveTasks+i);
     }
 }
 
