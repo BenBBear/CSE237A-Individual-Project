@@ -215,10 +215,12 @@ void learn_workloads(SharedVariable* sv) {
 
 void updateCurrentDeadlines(long long time_difference, int* lastAliveTasks, const int* aliveTasks, long long idleTime){
     int i = 0;
+    int x;
     for(;i<NUM_TASKS;i++){
         if(aliveTasks[i] == 1){
             if(lastAliveTasks[i] == 1 && idleTime == 0){
-                currentDeadlines[i] = currentDeadlines[i] - time_difference;
+                x = currentDeadlines[i] - time_difference;
+                currentDeadlines[i] = x > 0 ? x:0;
             }else{
                 currentDeadlines[i] = workloadDeadlines[i];
             }
