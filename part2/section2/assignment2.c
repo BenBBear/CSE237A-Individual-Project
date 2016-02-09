@@ -68,6 +68,7 @@ float calculate_utilization(int *prefered_freq, long long *w_900, long long *w_6
             sum+= ((float)w_600[i])/deadlines[i];
         }
     }
+    printf("util %f :: ",sum);
     return sum;
 }
 
@@ -75,7 +76,6 @@ float calculate_utilization(int *prefered_freq, long long *w_900, long long *w_6
 
 int possible(int *prefered_freq, long long *w_900, long long *w_600, long long *deadlines){
     float s = calculate_utilization(prefered_freq, w_900, w_600, deadlines);
-    printf("util %f :: ",s);
     return s <= 1.0;
 }
 
