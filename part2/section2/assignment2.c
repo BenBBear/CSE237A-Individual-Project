@@ -220,7 +220,7 @@ void updateCurrentDeadlines(long long time_difference, int* lastAliveTasks, cons
         if(aliveTasks[i] == 1){
             if(lastAliveTasks[i] == 1 && idleTime == 0){
                 x = currentDeadlines[i] - time_difference;
-                currentDeadlines[i] = x > 0 ? x:0;
+                currentDeadlines[i] = x > 0 ? x:workloadDeadlines[i];
             }else{
                 currentDeadlines[i] = workloadDeadlines[i];
             }
@@ -263,7 +263,7 @@ int lastAliveTasks[] = {0, 0, 0, 0, 0, 0, 0, 0};
 void updateLastAliveTasks(const int* aliveTasks){
     int i = 0;
     for(;i<NUM_TASKS;i++){
-        currentDeadlines[i] = *(aliveTasks+i);
+        lastAliveTasks[i] = *(aliveTasks+i);
     }
 }
 
