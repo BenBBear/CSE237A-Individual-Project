@@ -59,13 +59,13 @@ char *taskNum[] = {
 
 
 float calculate_utilization(int *prefered_freq, long long *w_900, long long *w_600, long long *deadlines){
-    float sum = 0;
+    float sum = 0.0;
     int i = 0;
     for(;i<NUM_TASKS;i++){
         if(prefered_freq[i] == HIGH){
-            sum+= w_900[i]/deadlines[i];
+            sum+= ((float)w_900[i])/deadlines[i];
         }else{
-            sum+= w_600[i]/deadlines[i];
+            sum+= ((float)w_600[i])/deadlines[i];
         }
     }
     return sum;
