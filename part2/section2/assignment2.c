@@ -147,7 +147,7 @@ void learn_workloads(SharedVariable* sv) {
     printf("Begin to check schedulility\n");
     int idx = -1;
     float util[8] = {0,0,0,0,0,0,0,0};
-    while(!possible(prefered_freq, workloads_900, workloads_600, workloadDeadlines)){
+    while(calculate_utilization(prefered_freq, workloads_900, workloads_600, workloadDeadlines) > 0.98){
         idx = -1;
         for(i=0;i<NUM_TASKS;i++){
             if(prefered_freq[i] == LOW){
