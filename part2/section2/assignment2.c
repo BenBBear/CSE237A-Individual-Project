@@ -130,14 +130,14 @@ void learn_workloads(SharedVariable* sv) {
         start = get_current_time_us();            
         (*(functions[i]))(sv);        
         end = get_current_time_us();
-        printDBG("900MHZ  %s: %lld\n",taskNum[i], end-start);
+        /* printDBG("900MHZ  %s: %lld\n",taskNum[i], end-start); */
         workloads_900[i] = end-start;
 
         set_by_min_freq();
         start = get_current_time_us();            
         (*(functions[i]))(sv);        
         end = get_current_time_us();
-        printDBG("600MHZ  %s: %lld\n",taskNum[i], end-start);
+        /* printDBG("600MHZ  %s: %lld\n",taskNum[i], end-start); */
         workloads_600[i] = end-start;
                 
         currentDeadlines[i] = workloadDeadlines[i];
@@ -285,11 +285,15 @@ void printDeadlines(){
 // sv->workloads     => estimated time to execute
 // currentDeadlines  => current time to deadline
 // workloadDeadlines => period & deadline
+long long energy = 0;
+#define uS 1000000
+#define P_IDEL 50
+int P_WORK[] = {400,800};
 TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long idleTime) {
     
     /* totalIdleTime += idleTime */;
     /* printDBG("Total idleTime is %lld\n", totalIdleTime); */
-    
+    static int prev_freq = HIGH;
     static long long last_timestamp = -1;
     long long current_timestamp = get_scheduler_elapsed_time_us();
     long long time_difference = 0;
@@ -304,8 +308,10 @@ TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long i
     TaskSelection sel;
     sel.task = chooseTask(currentDeadlines, aliveTasks); 
     sel.freq = chooseFreq(sel.task);
+    prev_freq = sel.freq;
     
-    
+    energy += (((float)idleTime/uS)*P_IDEL + ((float)time_difference/uS)* P_WORK[prev_freq]);
+    printDBG("Energy: %lld", energy);
     /* printTasks(aliveTasks); */
     /* printTask(sel); */
     /* printDeadlines(); */
