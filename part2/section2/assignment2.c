@@ -306,10 +306,10 @@ TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long i
     sel.freq = chooseFreq(sel.task);
     
     
-    printTasks(aliveTasks);
-    printTask(sel);
-    printDeadlines();
-    printDBG("idleTime is %lld\n", idleTime);
+    /* printTasks(aliveTasks); */
+    /* printTask(sel); */
+    /* printDeadlines(); */
+    /* printDBG("idleTime is %lld\n", idleTime); */
 
     updateLastAliveTasks(aliveTasks);
     return sel;
