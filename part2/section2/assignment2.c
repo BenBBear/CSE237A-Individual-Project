@@ -311,7 +311,7 @@ TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long i
     prev_freq = sel.freq;
     
     energy += (((float)idleTime/uS)*P_IDEL + ((float)time_difference/uS)* P_WORK[prev_freq]);
-    printDBG("Energy: %lld", energy);
+    printDBG("Energy: %lld\n", energy);
     /* printTasks(aliveTasks); */
     /* printTask(sel); */
     /* printDeadlines(); */
