@@ -10,3 +10,4 @@ long long workloadDeadlines[] = {
 	400000,
 	150000,
 };
+/* calculate estimated energy cost */
