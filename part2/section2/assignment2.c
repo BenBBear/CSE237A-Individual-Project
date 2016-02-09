@@ -105,6 +105,13 @@ int maxIndex(float *arr){
     return idx;
 };
 
+int sum(int *p){
+    int i = 0, s = 0;
+    for(;i<NUM_TASKS;i++){
+        s+=p[i];
+    }
+    return s;
+}
 
 
 int prefered_freq[] = {HIGH,HIGH,HIGH,HIGH,HIGH,HIGH,HIGH,HIGH};
@@ -147,7 +154,7 @@ void learn_workloads(SharedVariable* sv) {
     printf("Begin to check schedulility\n");
     int idx = -1;
     float util[8] = {0,0,0,0,0,0,0,0};
-    while(calculate_utilization(prefered_freq, workloads_900, workloads_600, workloadDeadlines) > 0.98){
+    while(calculate_utilization(prefered_freq, workloads_900, workloads_600, workloadDeadlines) > 0.98 && sum(prefered_freq) != NUM_TASKS){
         idx = -1;
         for(i=0;i<NUM_TASKS;i++){
             if(prefered_freq[i] == LOW){
