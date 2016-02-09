@@ -75,7 +75,7 @@ float calculate_utilization(int *prefered_freq, long long *w_900, long long *w_6
 
 int possible(int *prefered_freq, long long *w_900, long long *w_600, long long *deadlines){
     float s = calculate_utilization(prefered_freq, w_900, w_600, deadlines);
-    printf("util %f",s);
+    printf("util %f :: ",s);
     return s <= 1.0;
 }
 
@@ -166,7 +166,9 @@ void learn_workloads(SharedVariable* sv) {
         prefered_freq[idx] = HIGH;
         printFreq(prefered_freq);
     }
-    printf("Finished\n");
+    printf("\n Finished with ");
+    printFreq(prefered_freq);
+    printf("\n");
     
 }
 
