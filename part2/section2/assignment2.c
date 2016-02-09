@@ -68,7 +68,7 @@ float calculate_utilization(int *prefered_freq, long long *w_900, long long *w_6
             sum+= ((float)w_600[i])/deadlines[i];
         }
     }
-    printf("util %f :: ",sum);
+
     return sum;
 }
 
@@ -154,7 +154,8 @@ void learn_workloads(SharedVariable* sv) {
     printf("Begin to check schedulility\n");
     int idx = -1;
     float util[8] = {0,0,0,0,0,0,0,0};
-    while(calculate_utilization(prefered_freq, workloads_900, workloads_600, workloadDeadlines) > 0.98 && sum(prefered_freq) != NUM_TASKS){
+    float u = 0;
+    while(u > 0.98 && sum(prefered_freq) != NUM_TASKS){
         idx = -1;
         for(i=0;i<NUM_TASKS;i++){
             if(prefered_freq[i] == LOW){
@@ -171,6 +172,9 @@ void learn_workloads(SharedVariable* sv) {
         for(i=0;i<NUM_TASKS;i++)
             util[i] = 0.0;                
         prefered_freq[idx] = HIGH;
+        
+        u = calculate_utilization(prefered_freq, workloads_900, workloads_600, workloadDeadlines);
+        printf("util %f :: ",u);
         printFreq(prefered_freq);
     }
     printf("\n Finished with ");
