@@ -88,7 +88,6 @@ typedef struct shared_variable {
     int temp;
     int shock;
     int track;
-    long long *workloads;
 } SharedVariable;
 
 

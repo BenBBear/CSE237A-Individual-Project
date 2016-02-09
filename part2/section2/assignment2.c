@@ -4,7 +4,12 @@
 #include "scheduler.h"
 #include "governor.h"
 #include <stdio.h>
-
+#include <limits.h>
+#include <float.h>
+#define LOW 0
+#define HIGH 1
+#define Kbit(n,k) (n >> k) & 1
+#define END_SEQ 255
 // Note: Deadline of each workload is defined in the "workloadDeadlines" variable.
 // i.e., You can access the dealine of the BUTTON thread using workloadDeadlines[BUTTON]
 // See also deadlines.c and workload.h
@@ -13,7 +18,7 @@
 
 typedef  void* (*thread_function_t)(void*);
 
-long long workloads[] = {0,0,0,0,0,0,0,0};
+
 long long currentDeadlines[] = {0,0,0,0,0,0,0,0};
 
 thread_function_t functions[] = {&thread_button, &thread_twocolor, &thread_temp,
@@ -29,6 +34,17 @@ void printTasks(const int *aliveTasks){
     printDBG(" :::::: ");
 }
 
+void printFreq(int *freq){
+    int i = 0;
+    printf("Frequency Preference: ");
+    for(;i<NUM_TASKS;i++){
+        printf("%d ", freq[i]);        
+    }
+    printf("\n");    
+}
+
+
+
 char *taskNum[] = {
     "BUTTON",
     "TWOCOLOR",
@@ -40,18 +56,116 @@ char *taskNum[] = {
     "BUZZER"
 };
 
-void learn_workloads(SharedVariable* sv) {
-    sv->workloads = workloads;    
-    long long start, end;
+
+
+float calculate_utilization(int *prefered_freq, long long *w_900, long long *w_600, long long *deadlines){
+    float sum = 0;
     int i = 0;
+    for(;i<NUM_TASKS;i++){
+        if(prefered_freq[i] == HIGH){
+            sum+= w_900[i]/deadlines[i];
+        }else{
+            sum+= w_600[i]/deadlines[i];
+        }
+    }
+    return sum;
+}
+
+
+
+int possible(int *prefered_freq, long long *w_900, long long *w_600, long long *deadlines){
+    return calculate_utilization(prefered_freq, w_900, w_600, deadlines) <= 1.0;
+}
+
+int lessThanOneMaxIndex(float *arr){
+    float max = FLT_MIN;
+    int idx = -1;
+    int i;
+    for(i=0;i<NUM_TASKS;i++){
+        if(arr[i] > max && arr[i] <= 1.0){
+            max = arr[i];
+            idx = i;
+        }
+    }
+    return idx;
+};
+
+int maxIndex(float *arr){
+    float max = FLT_MIN;
+    int idx = -1;
+    int i;
+    for(i=0;i<NUM_TASKS;i++){
+        if(arr[i] > max){
+            max = arr[i];
+            idx = i;
+        }
+    }
+    return idx;
+};
+
+
+
+int prefered_freq[] = {HIGH,HIGH,HIGH,HIGH,HIGH,HIGH,HIGH,HIGH};
+int P_900 = 800;
+int P_600 = 400;
+
+void learn_workloads(SharedVariable* sv) {    
+    long long start, end;    
+    long long workloads_900[] = {0,0,0,0,0,0,0,0};
+    long long workloads_600[] = {0,0,0,0,0,0,0,0};
+    unsigned int i = 0;
     for(i = 0; i<NUM_TASKS;i++){
+        
+        set_by_max_freq();
         start = get_current_time_us();            
         (*(functions[i]))(sv);        
         end = get_current_time_us();
-        printDBG("%s: %lld\n",taskNum[i], end-start);
-        sv->workloads[i] = end-start;
+        printDBG("900MHZ  %s: %lld\n",taskNum[i], end-start);
+        workloads_900[i] = end-start;
+
+        set_by_min_freq();
+        start = get_current_time_us();            
+        (*(functions[i]))(sv);        
+        end = get_current_time_us();
+        printDBG("600MHZ  %s: %lld\n",taskNum[i], end-start);
+        workloads_600[i] = end-start;
+                
         currentDeadlines[i] = workloadDeadlines[i];
     }
+    
+    /* get workload_900, workload_600 */
+    for(i=0;i<NUM_TASKS;i++){
+        if(workloads_900[i]*P_900 > workloads_600[i]*P_600){
+            prefered_freq[i] = LOW;
+        }
+    }
+    printFreq(prefered_freq);
+    /* check schedulility */
+
+    printf("Begin to check schedulility\n");
+    int idx = -1;
+    float util[8] = {0,0,0,0,0,0,0,0};
+    while(!possible(prefered_freq, workloads_900, workloads_600, workloadDeadlines)){
+        idx = -1;
+        for(i=0;i<NUM_TASKS;i++){
+            if(prefered_freq[i] == LOW){
+                prefered_freq[i] = HIGH;
+                util[i] = calculate_utilization(prefered_freq,workloads_900, workloads_600, workloadDeadlines);
+                prefered_freq[i] = LOW;                
+            }
+        }
+
+        idx = lessThanOneMaxIndex(util);
+        if(idx == -1){
+            idx = maxIndex(util);
+        }        
+        for(i=0;i<NUM_TASKS;i++)
+            util[i] = 0.0;                
+        prefered_freq[idx] = HIGH;
+        printFreq(prefered_freq);
+    }
+    printf("Finished");
+    
 }
 
 
@@ -83,9 +197,6 @@ void learn_workloads(SharedVariable* sv) {
 /* sel.task = prev_selection;  */
 /* sel.freq = 1;  */
 
-#define LOW 0
-#define HIGH 1
-
 void updateCurrentDeadlines(long long time_difference, int* lastAliveTasks, const int* aliveTasks, long long idleTime){
     int i = 0;
     for(;i<NUM_TASKS;i++){
@@ -106,7 +217,7 @@ void updateCurrentDeadlines(long long time_difference, int* lastAliveTasks, cons
    choose process is seperate from update the current deadline
  */
 int chooseTask(long long *currentDeadlines ,const int* aliveTasks){
-    long long minDead = 2147483647;
+    long long minDead = LONG_MAX;
     int taskIdx = -1,i = 0;    
     for(;i<NUM_TASKS;i++){
         if(aliveTasks[i] == 1){
@@ -121,8 +232,8 @@ int chooseTask(long long *currentDeadlines ,const int* aliveTasks){
 
 
 /* how to choose the freq is seperate */
-int chooseFreq(){
-    return HIGH;
+int chooseFreq(int i){
+    return prefered_freq[i];
 };
 
 
@@ -174,7 +285,7 @@ TaskSelection select_task(SharedVariable* sv, const int* aliveTasks, long long i
         
     TaskSelection sel;
     sel.task = chooseTask(currentDeadlines, aliveTasks); 
-    sel.freq = chooseFreq();
+    sel.freq = chooseFreq(sel.task);
     
     
     /* printTasks(aliveTasks); */
