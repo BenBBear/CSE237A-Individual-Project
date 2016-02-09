@@ -10,7 +10,7 @@
 #define HIGH 1
 #define Kbit(n,k) (n >> k) & 1
 #define END_SEQ 255
-#define LIMIT 0.98
+#define LIMIT 1.0
 // Note: Deadline of each workload is defined in the "workloadDeadlines" variable.
 // i.e., You can access the dealine of the BUTTON thread using workloadDeadlines[BUTTON]
 // See also deadlines.c and workload.h
